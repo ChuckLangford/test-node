@@ -1,5 +1,10 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# Enhancements:
+# - Make the image version a variable
+# - Make the droplet name a variable
+# - Make the port mapping a variable
+# - Make the package url a variable
+# - Split testing workflows from image creation workflow and release workflow
 
 name: Node.js CI
 
@@ -30,8 +35,7 @@ jobs:
     - name: login
       run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
       env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-    # - run: ${{ secrets.GITHUB_TOKEN }} | docker login https://docker.pkg.github.com -u chucklangford --password-stdin
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker image
       run: docker build -t docker.pkg.github.com/chucklangford/test-node/test-node-chuck:1.0.0 .
     - name: Publish the Docker image
@@ -39,17 +43,15 @@ jobs:
     - name: Install SSH key
       uses: shimataro/ssh-key-action@v2
       with:
-              key: ${{ secrets.SSH_KEY }}
-              known_hosts: ${{ secrets.KNOWN_HOSTS }}
+        key: ${{ secrets.SSH_KEY }}
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-    - name: Say Hello
-      run: doctl compute ssh docker-new --ssh-command "echo hello"
-    - name: Sign in Docker on VM
+    - name: Sign in Docker on Digital Ocean droplet
       run: doctl compute ssh docker-new --ssh-command "docker login -u ${GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}} docker.pkg.github.com"
-    - name: Pull Image on Docker VM
+    - name: Pull Docker Image on Digital Ocean droplet
       run: doctl compute ssh docker-new --ssh-command "docker pull docker.pkg.github.com/chucklangford/test-node/test-node-chuck:1.0.0"
-    - name: Run The Image
-      run: doctl compute ssh docker-new --ssh-command "docker run -p 3000:3000 --name node-test docker.pkg.github.com/chucklangford/test-node/test-node-chuck:1.0.0"
+    - name: Run The Image on Droplet
+      run: doctl compute ssh docker-new --ssh-command "docker run -d -p 3000:3000 --name node-test docker.pkg.github.com/chucklangford/test-node/test-node-chuck:1.0.0"

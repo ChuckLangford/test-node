@@ -1,11 +1,3 @@
-# FROM node:lts-alpine
-# COPY . /app
-# WORKDIR /app
-# EXPOSE 8080
-# ENV PORT=8080
-# RUN npm install
-# CMD [ "npm", "start"]
-
 # Use the official image as a parent image.
 FROM node:lts-alpine
 
