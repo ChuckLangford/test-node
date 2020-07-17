@@ -36,7 +36,14 @@ jobs:
       run: docker build -t docker.pkg.github.com/chucklangford/test-node/test-node-chuck:1.0.0 .
     - name: Publish the Docker image
       run: docker push docker.pkg.github.com/chucklangford/test-node/test-node-chuck:1.0.0
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+              key: ${{ secrets.SSH_KEY }}
+              known_hosts: ${{ secrets.KNOWN_HOSTS }}
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Save DigitalOcean kubeconfig
+      run: doctl compute ssh docker-new --ssh-command "echo hello"
