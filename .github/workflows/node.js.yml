@@ -48,4 +48,4 @@ jobs:
     - name: Say Hello
       run: doctl compute ssh docker-new --ssh-command "echo hello"
     - name: Pull Docker Image onto VM
-      run: doctl compute ssh docker-new --ssh-command "echo ${{GITHUB_TOKEN}} | docker login -u ${{GITHUB_ACTOR}} --password-stdin docker.pkg.github.com"
+      run: doctl compute ssh docker-new --ssh-command 'echo ${{GITHUB_TOKEN}} | docker login -u ${{GITHUB_ACTOR}} --password-stdin docker.pkg.github.com'
