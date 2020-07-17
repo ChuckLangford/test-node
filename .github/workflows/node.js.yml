@@ -47,5 +47,9 @@ jobs:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
     - name: Say Hello
       run: doctl compute ssh docker-new --ssh-command "echo hello"
-    - name: Pull Docker Image onto VM
+    - name: Sign in Docker on VM
       run: doctl compute ssh docker-new --ssh-command "docker login -u ${GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}} docker.pkg.github.com"
+    - name: Pull Image on Docker VM
+      run: doctl compute ssh docker-new --ssh-command "docker pull docker.pkg.github.com//chucklangford/test-node/test-node-chuck:1.0.0"
+    - name: Run The Image
+      run: doctl compute ssh docker-new --ssh-command "docker run test-node-chuck:1.0.0"
