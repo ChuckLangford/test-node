@@ -50,6 +50,6 @@ jobs:
     - name: Sign in Docker on VM
       run: doctl compute ssh docker-new --ssh-command "docker login -u ${GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}} docker.pkg.github.com"
     - name: Pull Image on Docker VM
-      run: doctl compute ssh docker-new --ssh-command "docker pull docker.pkg.github.com//chucklangford/test-node/test-node-chuck:1.0.0"
+      run: doctl compute ssh docker-new --ssh-command "docker pull docker.pkg.github.com/chucklangford/test-node/test-node-chuck:1.0.0"
     - name: Run The Image
       run: doctl compute ssh docker-new --ssh-command "docker run test-node-chuck:1.0.0"
