@@ -49,5 +49,5 @@ jobs:
       run: doctl compute ssh docker-new --ssh-command "echo hello"
     - name: Pull Docker Image onto VM
       env:
-              DOCTL_COMMAND: 'echo ${{ secrets.GITHUB_TOKEN }} | docker login -u ${{GITHUB_ACTOR}} --password-stdin docker.pkg.github.com'
+              DOCTL_COMMAND: 'echo ${{ secrets.GITHUB_TOKEN }} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com'
       run: doctl compute ssh docker-new --ssh-command $DOCTL_COMMAND
