@@ -28,7 +28,9 @@ jobs:
     - run: npm run build --if-present
     - run: npm test
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag test-node-chuck:$(date +%s)
+      run: docker build . --file Dockerfile --tag docker.pkg.github.com/ChuckLangford/test-node/test-node-chuck:1.0.0
+    - name: Publish the Docker image
+      run: docker push docker.pkg.github.com/ChuckLangford/test-node/test-node-chuck:1.0.0
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
