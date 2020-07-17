@@ -27,7 +27,11 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
-    - run: ${{ secrets.GITHUB_TOKEN }} | docker login https://docker.pkg.github.com -u chucklangford --password-stdin
+    - name: login
+      run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
+      env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+    # - run: ${{ secrets.GITHUB_TOKEN }} | docker login https://docker.pkg.github.com -u chucklangford --password-stdin
     - name: Build the Docker image
       run: docker build -t docker.pkg.github.com/chucklangford/test-node/test-node-chuck:1.0.0 .
     - name: Publish the Docker image
