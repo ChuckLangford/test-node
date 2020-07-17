@@ -52,4 +52,4 @@ jobs:
     - name: Pull Image on Docker VM
       run: doctl compute ssh docker-new --ssh-command "docker pull docker.pkg.github.com/chucklangford/test-node/test-node-chuck:1.0.0"
     - name: Run The Image
-      run: doctl compute ssh docker-new --ssh-command "docker run docker.pkg.github.com/chucklangford/test-node/test-node-chuck"
+      run: doctl compute ssh docker-new --ssh-command "docker run docker.pkg.github.com/chucklangford/test-node/test-node-chuck:1.0.0"
